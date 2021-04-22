@@ -6,22 +6,25 @@ pygame.init()
 
 
 class Button:
-    def __init__(self, x: int,
-                 y: int,
-                 width: int,
-                 height: int,
-                 enabled: bool = True,
-                 text: str = '',
-                 bg: tuple = (124, 124, 124),
-                 fg: tuple = (255, 255, 255),
-                 cc: tuple = (13, 80, 213),
-                 hc: tuple = (160, 160, 160),
-                 border: int = 2,
-                 border_color: tuple = (0, 0, 0),
-                 font: pygame.font = pygame.font.SysFont('arial', 25),
-                 ipadx: int = 0,
-                 ipady: int = 0,
-                 function=None):
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        enabled: bool = True,
+        text: str = "",
+        bg: tuple = (124, 124, 124),
+        fg: tuple = (255, 255, 255),
+        cc: tuple = (13, 80, 213),
+        hc: tuple = (160, 160, 160),
+        border: int = 2,
+        border_color: tuple = (0, 0, 0),
+        font: pygame.font = pygame.font.SysFont("arial", 25),
+        ipadx: int = 0,
+        ipady: int = 0,
+        function=None,
+    ):
 
         # Coordinates and logics
         self.x = x
@@ -56,14 +59,38 @@ class Button:
             self.image.fill(self.border_color)
 
             if self.clicked:
-                pygame.draw.rect(self.image, self.cc, (self.border, self.border,
-                                                       self.width - (self.border * 2), self.height - (self.border * 2)))
+                pygame.draw.rect(
+                    self.image,
+                    self.cc,
+                    (
+                        self.border,
+                        self.border,
+                        self.width - (self.border * 2),
+                        self.height - (self.border * 2),
+                    ),
+                )
             elif self.hovered:
-                pygame.draw.rect(self.image, self.hc, (self.border, self.border,
-                                                       self.width - (self.border * 2), self.height - (self.border * 2)))
+                pygame.draw.rect(
+                    self.image,
+                    self.hc,
+                    (
+                        self.border,
+                        self.border,
+                        self.width - (self.border * 2),
+                        self.height - (self.border * 2),
+                    ),
+                )
             else:
-                pygame.draw.rect(self.image, self.bg, (self.border, self.border,
-                                                       self.width - (self.border * 2), self.height - (self.border * 2)))
+                pygame.draw.rect(
+                    self.image,
+                    self.bg,
+                    (
+                        self.border,
+                        self.border,
+                        self.width - (self.border * 2),
+                        self.height - (self.border * 2),
+                    ),
+                )
 
         else:
             self.image.fill(self.bg)
@@ -77,8 +104,9 @@ class Button:
         font = self.font
         text = font.render(self.text, False, self.fg)
         size = text.get_size()
-        x, y = (self.width // 2 - (size[0]//2)) + \
-            self.ipadx, (self.height // 2 - (size[1]//2)) + self.ipady
+        x, y = (self.width // 2 - (size[0] // 2)) + self.ipadx, (
+            self.height // 2 - (size[1] // 2)
+        ) + self.ipady
         pos = vec(x, y)
         self.image.blit(text, pos)
 
@@ -98,7 +126,9 @@ class Button:
             position = pygame.mouse.get_pos()
 
             if (position[0] > self.pos[0]) and (position[0] < self.pos[0] + self.width):
-                if (position[1] > self.pos[1]) and (position[1] < self.pos[1] + self.height):
+                if (position[1] > self.pos[1]) and (
+                    position[1] < self.pos[1] + self.height
+                ):
                     if self.enabled:
                         self.clicked = True
 
@@ -110,13 +140,19 @@ class Button:
 
 
 class Input_box:
-    def __init__(self, x=0, y=0, width=75, height=30,
-                 bg_color=(124, 124, 124),
-                 active_color=(255, 255, 255),
-                 font_size=18,
-                 fg=(0, 0, 0),
-                 border=0,
-                 border_color=(0, 0, 0)):
+    def __init__(
+        self,
+        x=0,
+        y=0,
+        width=75,
+        height=30,
+        bg_color=(124, 124, 124),
+        active_color=(255, 255, 255),
+        font_size=18,
+        fg=(0, 0, 0),
+        border=0,
+        border_color=(0, 0, 0),
+    ):
 
         # Coords and logics
         self.x = x
@@ -147,23 +183,31 @@ class Input_box:
                 self.image.fill(self.bg_color)
             else:
                 self.image.fill(self.border_color)
-                pygame.draw.rect(self.image, self.bg_color,
-                                 (self.border,
-                                  self.border,
-                                  self.width - self.border * 2,
-                                  self.height - self.border * 2)
-                                 )
+                pygame.draw.rect(
+                    self.image,
+                    self.bg_color,
+                    (
+                        self.border,
+                        self.border,
+                        self.width - self.border * 2,
+                        self.height - self.border * 2,
+                    ),
+                )
         else:
             if self.border == 0:
                 self.image.fill(self.active_color)
             else:
                 self.image.fill(self.border_color)
-                pygame.draw.rect(self.image, self.active_color,
-                                 (self.border,
-                                  self.border,
-                                  self.width - self.border * 2,
-                                  self.height - self.border * 2)
-                                 )
+                pygame.draw.rect(
+                    self.image,
+                    self.active_color,
+                    (
+                        self.border,
+                        self.border,
+                        self.width - self.border * 2,
+                        self.height - self.border * 2,
+                    ),
+                )
 
         text = self.font.render(self.text, False, self.fg)
 
@@ -173,15 +217,20 @@ class Input_box:
 
         # drawing text into screen
         if not self.active:
-            self.image.blit(
-                text, (self.border * 2, (self.height - text_height) // 2))
+            self.image.blit(text, (self.border * 2, (self.height - text_height) // 2))
         else:
             if text_width < self.width - self.border * 2:
                 self.image.blit(
-                    text, (self.border * 2, (self.height - text_height) // 2))
+                    text, (self.border * 2, (self.height - text_height) // 2)
+                )
             else:
-                self.image.blit(text, ((self.border * 2) + (self.width - text_width - self.border * 3),
-                                       (self.height - text_height) // 2))
+                self.image.blit(
+                    text,
+                    (
+                        (self.border * 2) + (self.width - text_width - self.border * 3),
+                        (self.height - text_height) // 2,
+                    ),
+                )
 
         window.blit(self.image, self.pos)
 
@@ -189,8 +238,8 @@ class Input_box:
         # Checks click in box
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            if (pos[0] > self.x and pos[0] < self.x + self.width):
-                if (pos[1] > self.y and pos[1] < self.y + self.height):
+            if pos[0] > self.x and pos[0] < self.x + self.width:
+                if pos[1] > self.y and pos[1] < self.y + self.height:
                     self.active = True
 
                 else:
@@ -203,46 +252,49 @@ class Input_box:
             if self.active:
                 if event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
-                elif str((event.unicode).encode()).find('\\') == -1:
+                elif str((event.unicode).encode()).find("\\") == -1:
                     self.text += event.unicode
 
 
 class Slider:
-    def __init__(self,  x: int,
-                 y: int,
-                 from_: int = 0,
-                 to_: int = 3,
-                 part_size: int = 10,
-                 bg: tuple = (54, 54, 54),
-                 cc: tuple = (13, 80, 213),
-                 hc: tuple = (160, 160, 160),
-                 fg: tuple = (255, 255, 255),
-                 thumb_bg: tuple = (124, 124, 124),
-                 font: pygame.font = pygame.font.SysFont("arial", 16),
-                 show_numbers: bool = True):
+    def __init__(
+        self,
+        x: int,
+        y: int,
+        from_: int = 0,
+        to_: int = 3,
+        part_size: int = 10,
+        bg: tuple = (54, 54, 54),
+        cc: tuple = (13, 80, 213),
+        hc: tuple = (160, 160, 160),
+        fg: tuple = (255, 255, 255),
+        thumb_bg: tuple = (124, 124, 124),
+        font: pygame.font = pygame.font.SysFont("arial", 16),
+        show_numbers: bool = True,
+    ):
         """A Slider GUI for pygame.
-            params:
-                x: int                                               #The x coordinate of slider
-                y: int                                               #The y coordinate of slider
-                # Where The value starts from
-                from_: int  default=0
-                to_: int = 3                                         #Where The value ends
-                # The size for one part in the slider
-                part_size: int  default = 10
-                # Background color of the Slider
-                bg: tuple   default = (54, 54, 54)
-                # Color when the thumb is clicked
-                cc: tuple   default = (13, 80, 213)
-                # Color when the thumb is hovered
-                hc: tuple   default = (160, 160, 160)
-                # Color of the font to be displayed
-                fg: tuple   default = (255, 255, 255)
-                # Background color of the thumb
-                thumb_bg: tuple     default = (124, 124, 124)
-                # the font of the numbers
-                font: pygame.font   default = pygame.font.SysFont("arial", 16)
-                # True if you want the numbers to be shown
-                show_numbers: bool  default = True
+        params:
+            x: int                                               #The x coordinate of slider
+            y: int                                               #The y coordinate of slider
+            # Where The value starts from
+            from_: int  default=0
+            to_: int = 3                                         #Where The value ends
+            # The size for one part in the slider
+            part_size: int  default = 10
+            # Background color of the Slider
+            bg: tuple   default = (54, 54, 54)
+            # Color when the thumb is clicked
+            cc: tuple   default = (13, 80, 213)
+            # Color when the thumb is hovered
+            hc: tuple   default = (160, 160, 160)
+            # Color of the font to be displayed
+            fg: tuple   default = (255, 255, 255)
+            # Background color of the thumb
+            thumb_bg: tuple     default = (124, 124, 124)
+            # the font of the numbers
+            font: pygame.font   default = pygame.font.SysFont("arial", 16)
+            # True if you want the numbers to be shown
+            show_numbers: bool  default = True
         """
 
         self.x = x
@@ -257,8 +309,7 @@ class Slider:
         self.hovering = False
 
         thumb_width = self.width // (to_ - (from_ - 1))
-        self.thumb = pygame.Rect(0, 0,
-                                 thumb_width, self.height)
+        self.thumb = pygame.Rect(0, 0, thumb_width, self.height)
 
         self.bg = bg
         self.hc = hc
@@ -268,16 +319,13 @@ class Slider:
 
         self.font = font
 
-        self.value = (self.from_-1) + \
-            ((self.thumb.x + self.thumb.w) / self.thumb.w)
+        self.value = (self.from_ - 1) + ((self.thumb.x + self.thumb.w) / self.thumb.w)
         self.show_numbers = show_numbers
 
     def draw(self, window):
-        """A function that draws the slider into the  pygame screen
-        """
+        """A function that draws the slider into the  pygame screen"""
 
-        self.value = (self.from_-1) + \
-            ((self.thumb.x + self.thumb.w) / self.thumb.w)
+        self.value = (self.from_ - 1) + ((self.thumb.x + self.thumb.w) / self.thumb.w)
         self.image.fill(self.bg)
 
         if self.active:
@@ -288,8 +336,7 @@ class Slider:
             pygame.draw.rect(self.image, self.thumb_bg, self.thumb)
 
         if self.show_numbers:
-            text_from = self.font.render(
-                str(self.from_), True, (255, 255, 255))
+            text_from = self.font.render(str(self.from_), True, (255, 255, 255))
             x_from, y_from = self.x, self.y + self.height + 5
             from_pos = vec(x_from, y_from)
             window.blit(text_from, from_pos)
@@ -304,15 +351,16 @@ class Slider:
         window.blit(self.image, self.pos)
 
     def events(self, event):
-        """A function to handle all events like clicking, moving, hovering and more
-        """
+        """A function to handle all events like clicking, moving, hovering and more"""
 
         pos = pygame.mouse.get_pos()
 
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 inside_pos = self.x - pos[0]
-                if (abs(inside_pos) > self.thumb.x) and (abs(inside_pos) < self.thumb.x + self.thumb.w):
+                if (abs(inside_pos) > self.thumb.x) and (
+                    abs(inside_pos) < self.thumb.x + self.thumb.w
+                ):
                     self.hovering = True
 
                 else:
@@ -326,10 +374,10 @@ class Slider:
             inside_pos = self.x - pos[0]
 
             # Checks if the the slide goes out or not and moves the slider
-            if (abs(inside_pos) > self.width):
+            if abs(inside_pos) > self.width:
                 inside_pos = self.width
 
-            elif (inside_pos > -self.thumb.w):
+            elif inside_pos > -self.thumb.w:
                 inside_pos = 0
 
             else:
@@ -340,175 +388,10 @@ class Slider:
             if pos[0] > self.x and pos[0] < self.x + self.width:
                 if pos[1] > self.y and pos[1] < self.y + self.height:
                     inside_pos = self.x - pos[0]
-                    if (abs(inside_pos) > self.thumb.x) and (abs(inside_pos) < self.thumb.x + self.thumb.w):
+                    if (abs(inside_pos) > self.thumb.x) and (
+                        abs(inside_pos) < self.thumb.x + self.thumb.w
+                    ):
                         self.active = True
 
         if event.type == pygame.MOUSEBUTTONUP:
             self.active = False
-
-
-class Text_box:
-    def __init__(self, x=0, y=1, width=200, height=100,
-                 bg_color=(124, 124, 124),
-                 active_color=(255, 255, 255),
-                 text_size=18,
-                 fg=(0, 0, 0),
-                 border=0,
-                 border_color=(0, 0, 0),
-                 cursor_color=(255, 0, 0),
-                 cursor_width=2):
-
-        # Coords and logics
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.pos = vec(self.x, self.y)
-        self.size = vec(self.width, self.height)
-        self.image = pygame.Surface((width, height))
-        self.active = False
-
-        # Colors
-        self.bg_color = bg_color
-        self.active_color = active_color
-        self.border_color = border_color
-        self.fg = fg
-
-        # Fonts
-        self.text = ""
-        self.textList = []
-        self.text_size = text_size
-        self.font = pygame.font.SysFont("Times New Roman", self.text_size)
-        self.labels = []
-
-        self.border = border
-
-        # Cursor
-        self.cursor = [0, 0]
-        self.pad = 0
-        self.cursor_color = cursor_color
-        self.cursor_width = cursor_width
-
-        self.inReturn = False
-
-    def key_left(self):
-        print('left')
-        if sum(self.cursor) == 0:
-            self.cursor = self.cursor
-        elif self.cursor[0] == 0:
-            self.cursor[1] -= 1
-            self.cursor[0] = len(self.textList[self.cursor[1]])
-        else:
-            self.cursor[0] -= 1
-
-    def multiline(self):
-        text = self.text
-        print(f'multiline {text.encode()}')
-        self.textList = text.split('\n')
-        print(self.textList, self.cursor)
-
-    def draw(self, window):
-        self.win = window
-        if not self.active:
-            if self.border == 0:
-                self.image.fill(self.bg_color)
-            else:
-                self.image.fill(self.border_color)
-                pygame.draw.rect(self.image, self.bg_color,
-                                 (self.border,
-                                  self.border,
-                                  self.width - self.border * 2,
-                                  self.height - self.border * 2)
-                                 )
-                pygame.draw.rect()
-        else:
-            if self.border == 0:
-                self.image.fill(self.active_color)
-            else:
-                self.image.fill(self.border_color)
-                pygame.draw.rect(self.image, self.active_color,
-                                 (self.border,
-                                  self.border,
-                                  self.width - self.border * 2,
-                                  self.height - self.border * 2)
-                                 )
-        posY = 0
-        cursor = pygame.Surface((self.cursor_width, self.text_size))
-        cursor.fill((self.cursor_color))
-
-        for i in range(len(self.textList)):
-            # self.pad = 0
-            text = self.font.render(self.textList[i], False, self.fg)
-
-            # getting the height and width of text
-            text_height = text.get_height()
-            text_width = text.get_width()
-
-            # drawing text into screen
-            if not self.active:
-                self.image.blit(
-                    text, (self.border * 2, posY))
-            else:
-                if text_width < self.width - self.border * 2:
-                    self.image.blit(
-                        text, (self.border * 2, posY))
-                else:
-                    self.image.blit(text, ((self.border * 2) + (self.width - text_width - self.border * 3),
-                                           posY))
-            posY = (i+1) * self.text_size
-            # self.pad += text_width
-            self.pad = self.font.size(
-                self.textList[self.cursor[1]][:self.cursor[0]])[0]
-
-        self.image.blit(cursor, (self.pad, self.cursor[1] * self.text_size))
-        window.blit(self.image, self.pos)
-
-    def events(self, event):
-        # Checks click in box
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            if (pos[0] > self.x and pos[0] < self.x + self.width):
-                if (pos[1] > self.y and pos[1] < self.y + self.height):
-                    self.active = True
-
-                else:
-                    self.active = False
-
-            else:
-                self.active = False
-
-        if event.type == pygame.KEYDOWN:
-            if self.active:
-                if event.key == pygame.K_BACKSPACE:
-                    if len(self.text) > 0 and self.text[-1] == '\n':
-                        self.cursor[1] -= 1
-                        self.cursor[0] = -1
-                    self.text = self.text[:self.cursor[0] -
-                                          1] + self.text[self.cursor[0]:]
-                    self.key_left()
-                    print('backspace')
-                elif event.key == pygame.K_RETURN:
-                    self.text += '\n'
-                    self.cursor[1] += 1
-                    self.cursor[0] = 0
-                    print('return')
-                elif event.key == pygame.K_LEFT:
-                    self.key_left()
-                elif event.key == pygame.K_RIGHT:
-                    print(self.cursor)
-                    # if self.cursor[0] == 0:
-                    #     self.cursor[1] -= 1
-                    #     self.cursor[0] = len(self.textList[self.cursor[1]])
-                    # else:
-                    #     self.cursor[0] -= 1
-                    print(self.cursor)
-                elif str((event.unicode).encode()).find('\\') == -1:
-                    if len(self.textList) > 0:
-                        print('testing', len(self.textList[self.cursor[1]]) + self.cursor[0])
-                    self.text = self.text[:self.cursor[0]] + \
-                        event.unicode + self.text[self.cursor[0]:]
-                    self.cursor[0] += 1
-                    print(
-                        f'letter {self.text}\nx={self.cursor[0]}\ny={self.cursor[1]}')
-
-                self.multiline()
