@@ -1,3 +1,4 @@
+site_author: NoLawz
 site_name: Py-GameUI
 site_url: https://aman333nolawz.github.io/py-GameUI-docs/
 
@@ -18,10 +19,13 @@ theme:
     code: Fira Code Medium
   features:
     - navigation.tabs
+    - navigation.top
 
 nav:
-  - Home:
-      - Introduction: index.md
+  - Quickstart Guide:
+      - Getting Started: index.md
+  - API Reference:
+      - Refernece: reference.md
 
 markdown_extensions:
   - markdown.extensions.toc:
@@ -103,10 +107,17 @@ extra_javascript:
 
 repo_url: https://github.com/aman333nolawz/py-GameUI
 repo_name: aman333nolawz/py-GameUI
-edit_uri: https://github.com/aman333nolawz/py-GameUI-docs/edit/gh-page/docs/
+edit_uri: https://github.com/aman333nolawz/py-GameUI/blob/main/docs/src/markdown/
 
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/aman333nolawz
       name: NoLawz on github
+
+plugins:
+  - search
+  - mkdocstrings
+  - with-pdf:
+      cover_subtitle: A simple GUI package for pygame
+      back_cover: true
