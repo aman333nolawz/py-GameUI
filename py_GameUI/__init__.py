@@ -14,7 +14,7 @@ pygame.init()
 class Button:
     def __init__(
         self,
-        relative_rect: pygame.Rect,
+        relative_rect: Union[pygame.Rect, tuple, list],
         enabled: bool = True,
         text: str = "",
         image: pygame.Surface = None,
@@ -53,7 +53,10 @@ class Button:
         :param function: The function you want to call when the button is pressed
         """
         # Coordinates and logics
-        self.rect = relative_rect
+        if isinstance(relative_rect, pygame.Rect):
+            self.rect = relative_rect
+        elif isinstance(relative_rect, tuple) or isinstance(relative_rect, list):
+            self.rect = pygame.Rect(*relative_rect)
         self.x = self.rect.x
         self.y = self.rect.y
         self.width = self.rect.width
@@ -74,19 +77,11 @@ class Button:
         self.cc = cc
 
         if isinstance(border_radius, int):
-            self.border_radius = [
-                border_radius,
-                border_radius,
-                border_radius,
-                border_radius,
-            ]
+            self.border_radius = [border_radius for _ in range(4)]
         elif isinstance(border_radius, tuple):
-            self.border_radius = [
-                border_radius[0],
-                border_radius[1],
-                border_radius[2],
-                border_radius[3],
-            ]
+            self.border_radius = list(border_radius)
+        else:
+            self.border_radius = border_radius
         self.border_color = border_color
         self.border = border
 
@@ -165,7 +160,9 @@ class Button:
         font = self.font
         text = font.render(self.text, False, self.fg)
         size = text.get_size()
-        x, y = (self.width // 2 - (size[0] // 2)) + self.ipadx, (self.height // 2 - (size[1] // 2)) + self.ipady
+        x, y = (self.width // 2 - (size[0] // 2)) + self.ipadx, (
+            self.height // 2 - (size[1] // 2)
+        ) + self.ipady
         pos = vec(x, y)
         self.surface.blit(text, pos)
 
@@ -176,7 +173,7 @@ class Button:
         """
         pos = pygame.mouse.get_pos()
         if (pos[0] > self.pos[0]) and (pos[0] < self.pos[0] + self.width):
-            if (pos[1] > self.pos[1]) and (pos[1] < self.pos[1] + self.height):
+            if (pos[1] > self.pos[1]) and (pos[1] < self.pos[1] + self.height): # Check if the mouse is hovered
                 if self.enabled:
                     self.hovered = True
 
@@ -186,10 +183,10 @@ class Button:
             self.hovered = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            position = pygame.mouse.get_pos()
-
-            if (position[0] > self.pos[0]) and (position[0] < self.pos[0] + self.width):  # noqa: E501
-                if (position[1] > self.pos[1]) and (position[1] < self.pos[1] + self.height):  # noqa: E501
+            if (pos[0] > self.pos[0]) and (pos[0] < self.pos[0] + self.width):
+                if (pos[1] > self.pos[1]) and (
+                    pos[1] < self.pos[1] + self.height
+                ): # Checks if the button is pressed
                     if self.enabled:
                         self.clicked = True
 
@@ -282,12 +279,15 @@ class Input_box:
             self.surface.blit(text, (self.border * 2, (self.height - text_height) // 2))
         else:
             if text_width < self.width - self.border * 2:
-                self.surface.blit(text, (self.border * 2, (self.height - text_height) // 2))
+                self.surface.blit(
+                    text, (self.border * 2, (self.height - text_height) // 2)
+                )
             else:
                 self.surface.blit(
                     text,
                     (
-                        (self.border * 2) + (self.width - text_width - self.border * 3),  # noqa: E501
+                        (self.border * 2)
+                        + (self.width - text_width - self.border * 3),  # noqa: E501
                         (self.height - text_height) // 2,
                     ),
                 )
@@ -421,7 +421,9 @@ class Slider:
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 inside_pos = self.x - pos[0]
-                if (abs(inside_pos) > self.thumb.x) and (abs(inside_pos) < self.thumb.x + self.thumb.w):
+                if (abs(inside_pos) > self.thumb.x) and (
+                    abs(inside_pos) < self.thumb.x + self.thumb.w
+                ):
                     self.hovering = True
 
                 else:
@@ -449,7 +451,9 @@ class Slider:
             if pos[0] > self.x and pos[0] < self.x + self.width:
                 if pos[1] > self.y and pos[1] < self.y + self.height:
                     inside_pos = self.x - pos[0]
-                    if (abs(inside_pos) > self.thumb.x) and (abs(inside_pos) < self.thumb.x + self.thumb.w):
+                    if (abs(inside_pos) > self.thumb.x) and (
+                        abs(inside_pos) < self.thumb.x + self.thumb.w
+                    ):
                         self.active = True
 
         if event.type == pygame.MOUSEBUTTONUP:
@@ -577,13 +581,16 @@ class Text_box:
                     self.surface.blit(
                         text,
                         (
-                            (self.border * 2) + (self.width - text_width - self.border * 3),
+                            (self.border * 2)
+                            + (self.width - text_width - self.border * 3),
                             posY,
                         ),
                     )
             posY = (i + 1) * self.text_size
             # self.pad += text_width
-            self.pad = self.font.size(self.textList[self.cursor[1]][: self.cursor[0]])[0]
+            self.pad = self.font.size(self.textList[self.cursor[1]][: self.cursor[0]])[
+                0
+            ]
 
         self.surface.blit(cursor, (self.pad, self.cursor[1] * self.text_size))
         window.blit(self.surface, self.pos)
@@ -608,7 +615,9 @@ class Text_box:
                     if len(self.text) > 0 and self.text[-1] == "\n":
                         self.cursor[1] -= 1
                         self.cursor[0] = -1
-                    self.text = self.text[: self.cursor[0] - 1] + self.text[self.cursor[0] :]
+                    self.text = (
+                        self.text[: self.cursor[0] - 1] + self.text[self.cursor[0] :]
+                    )
                     self.key_left()
                     print("backspace")
                 elif event.key == pygame.K_RETURN:
@@ -632,7 +641,11 @@ class Text_box:
                             "testing",
                             len(self.textList[self.cursor[1]]) + self.cursor[0],
                         )
-                    self.text = self.text[: self.cursor[0]] + event.unicode + self.text[self.cursor[0] :]
+                    self.text = (
+                        self.text[: self.cursor[0]]
+                        + event.unicode
+                        + self.text[self.cursor[0] :]
+                    )
                     self.cursor[0] += 1
                     print(f"letter {self.text}\nx={self.cursor[0]}\ny={self.cursor[1]}")
 
@@ -651,6 +664,8 @@ def gradient_rect(
     colour_rect = pygame.Surface((2, 2))
     pygame.draw.line(colour_rect, left_colour, (0, 0), (0, 1))
     pygame.draw.line(colour_rect, right_colour, (1, 0), (1, 1))
-    colour_rect = pygame.transform.smoothscale(colour_rect, (target_rect.width, target_rect.height))
+    colour_rect = pygame.transform.smoothscale(
+        colour_rect, (target_rect.width, target_rect.height)
+    )
     window.blit(colour_rect, target_rect)
     return colour_rect
