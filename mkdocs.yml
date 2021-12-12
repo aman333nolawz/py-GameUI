@@ -2,10 +2,10 @@ site_author: NoLawz
 site_name: Py-GameUI
 site_url: https://aman333nolawz.github.io/py-GameUI-docs/
 
-docs_dir: source/src/markdown
+docs_dir: docs_src/src/markdown
 theme:
   name: material
-  custom_dir: source/theme
+  custom_dir: docs_src/theme
   icon:
     logo: material/book-open-page-variant
     repo: fontawesome/brands/github
@@ -107,7 +107,7 @@ extra_javascript:
 
 repo_url: https://github.com/aman333nolawz/py-GameUI
 repo_name: aman333nolawz/py-GameUI
-edit_uri: https://github.com/aman333nolawz/py-GameUI/blob/main/docs/source/src/markdown/
+edit_uri: https://github.com/aman333nolawz/py-GameUI/blob/main/docs_src/src/markdown/
 
 extra:
   social:
@@ -118,6 +118,3 @@ extra:
 plugins:
   - search
   - mkdocstrings
-  - with-pdf:
-      cover_subtitle: A simple GUI package for pygame
-      back_cover: true
