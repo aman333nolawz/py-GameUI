@@ -34,25 +34,26 @@ class Button:
         ipady: int = 0,
         function=None,
     ):
-        """Initializing the button
-        :param relative_rect: The coordinates and the size of the button
-        :param enabled: If you want the button to be whether enabled or disabled. Default to True
-        :param text: The text you want to display in the button
-        :param image: The image you want to blit
-        :param image_x: X Coordinate of the image
-        :param image_y: Y Coordinate of the image
-        :param bg: The background color of the button
-        :param fg: Color of the font
-        :param cc: Color of the button when clicked
-        :param hc: Color of the button when hovered
-        :param border: The width of the border you want
-        :param border_color: Color of the border of the Button
-        :param border_radius: Border radius for the button
-        :param font: Name of the font you want to display the text
-        :type font: class`pygame.font.Font`
-        :param ipadx: The internal x-padding of the button
-        :param ipady: The internal y-padding of the button
-        :param function: The function you want to call when the button is pressed
+        """Button element.
+        params:
+            relative_rect: The coordinates and the size of the button
+            enabled: If you want the button to be whether enabled or disabled. Default to True
+            text: The text you want to display in the button
+            image: The image you want to blit
+            image_x: X Coordinate of the image
+            image_y: Y Coordinate of the image
+            bg: The background color of the button
+            fg: Color of the font
+            cc: Color of the button when clicked
+            hc: Color of the button when hovered
+            border: The width of the border you want
+            border_color: Color of the border of the Button
+            border_radius: Border radius for the button
+            font: Name of the font you want to display the text
+            font: class`pygame.font.Font`
+            ipadx: The internal x-padding of the button
+            ipady: The internal y-padding of the button
+            function: The function you want to call when the button is pressed
         """
         # Coordinates and logics
         if isinstance(relative_rect, pygame.Rect):
@@ -343,8 +344,8 @@ class Slider:
     ):
         """A Slider GUI for pygame.
         params:
-            x:The X position of the slider
-            y:The Y position of the slider
+            x: The X position of the slider
+            y: The Y position of the slider
             from_: Where The value starts from
             to_: Where the value ends
             part_size: The size for one part in the slider
