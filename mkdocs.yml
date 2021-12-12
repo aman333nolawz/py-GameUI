@@ -25,7 +25,7 @@ nav:
   - Quickstart Guide:
       - Getting Started: index.md
   - API Reference:
-      - Refernece: reference.md
+      - Reference: reference.md
 
 markdown_extensions:
   - markdown.extensions.toc:
@@ -120,3 +120,9 @@ plugins:
   - mkdocstrings:
       watch:
         - py_GameUI/__init__.py
+      handlers:
+        python:
+          selection:
+            filters:
+              - "!^_" # exlude all members starting with _
+              - "^__init__$" # but always include __init__ modules and methods
