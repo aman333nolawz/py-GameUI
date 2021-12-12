@@ -54,7 +54,7 @@ class Button:
             border: The width of the border you want
             border_color: Color of the border of the Button
             border_radius: Border radius for the button
-            font: Name of the font you want to display the text
+            font: Font of the text you want to display
             ipadx: The internal x-padding of the button
             ipady: The internal y-padding of the button
             function: The function you want to call when the button is pressed
@@ -227,6 +227,7 @@ class Input_box:
             relative_rect: Coordinates and size of the input box
             bg_color: Background color of the input box
             active_color: Background color of the input box when it is focused
+            font: Font for the text
             fg: Font color for the input box
             border: Size of the border
             border_color: Color of the border
@@ -376,8 +377,7 @@ class Slider:
             hc: Color when the thumb is hovered
             fg: Color of the font to be displayed
             thumb_bg: Background color of the thumb
-            font_family: The font family of the number displayed (Font should be a system font)
-            font_size: The font size of the number displayed
+            font: The font for the number displayed
             show_numbers: True if you want the numbers to be shown
         """
 
@@ -409,10 +409,10 @@ class Slider:
         self.value = (self.from_ - 1) + ((self.thumb.x + self.thumb.w) / self.thumb.w)
         self.show_numbers = show_numbers
 
-    def draw(self, window):
+    def draw(self, window: pygame.Surface):
         """A function that draws the slider into the  pygame screen
-        :param window: The window to draw the slider to
-        :type window: class:`pygame.Surface`
+        params:
+            window: The window to draw the slider to
         """
 
         self.value = (self.from_ - 1) + ((self.thumb.x + self.thumb.w) / self.thumb.w)
@@ -448,14 +448,17 @@ class Slider:
 
         pos = pygame.mouse.get_pos()
 
-        if pos[0] > self.x and pos[0] < self.x + self.width:
-            if pos[1] > self.y and pos[1] < self.y + self.height:
+        if (
+            pos[0] > self.x and pos[0] < self.x + self.width
+        ):  # checks if mouse's x position is inside the bar
+            if (
+                pos[1] > self.y and pos[1] < self.y + self.height
+            ):  # checks if mouse's y position is inside the bar
                 inside_pos = self.x - pos[0]
                 if (abs(inside_pos) > self.thumb.x) and (
                     abs(inside_pos) < self.thumb.x + self.thumb.w
-                ):
+                ):  # Checks if the mouse is just over the thumb
                     self.hovering = True
-
                 else:
                     self.hovering = False
             else:
@@ -466,25 +469,28 @@ class Slider:
         if self.active:
             inside_pos = self.x - pos[0]
 
-            # Checks if the the slide goes out or not and moves the slider
+            # Checks if the the slide goes out. if goes out then don't move the slider
             if abs(inside_pos) > self.width:
                 inside_pos = self.width
 
-            elif inside_pos > -self.thumb.w:
+            elif (
+                inside_pos > -self.thumb.w
+            ):  # Checks if thumb goes far of to the left. if yes, then set it to 0
                 inside_pos = 0
 
-            else:
-                self.thumb.x = abs(inside_pos) - (self.thumb.w)
+            else:  # If the mouse cursor is inside the bar, then move the thumb
+                self.thumb.x = abs(inside_pos) - self.thumb.w
 
         # Checks click in slider thump
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pos[0] > self.x and pos[0] < self.x + self.width:
                 if pos[1] > self.y and pos[1] < self.y + self.height:
                     inside_pos = self.x - pos[0]
-                    if (abs(inside_pos) > self.thumb.x) and (
-                        abs(inside_pos) < self.thumb.x + self.thumb.w
-                    ):
-                        self.active = True
+                    self.active = True
+                else:
+                    self.active = False
+            else:
+                self.active = False
 
         if event.type == pygame.MOUSEBUTTONUP:
             self.active = False
@@ -494,16 +500,23 @@ def gradient_rect(
     window: pygame.Surface,
     left_colour: Union[tuple, list, pygame.Color],
     right_colour: Union[tuple, list, pygame.Color],
-    target_rect: pygame.Rect,
+    relative_rect: pygame.Rect,
 ):
-    """Draw a horizontal-gradient filled rectangle covering <target_rect>"""
-
+    """Draw a horizontal-gradient filled rectangle covering <relative_rect>
+    params:
+        window: Screen to blit the gradient rect
+        left_colour: Color in the left corner
+        right_colour: Color in the right corner
+        relative_rect: Position and width to draw the gradient rect
+    """
+    if isinstance(relative_rect, tuple) or isinstance(relative_rect, list):
+        relative_rect = pygame.Rect(*relative_rect)
     # Code from "https://stackoverflow.com/questions/62336555/how-to-add-color-gradient-to-rectangle-in-pygame"
     colour_rect = pygame.Surface((2, 2))
     pygame.draw.line(colour_rect, left_colour, (0, 0), (0, 1))
     pygame.draw.line(colour_rect, right_colour, (1, 0), (1, 1))
     colour_rect = pygame.transform.smoothscale(
-        colour_rect, (target_rect.width, target_rect.height)
+        colour_rect, (relative_rect.width, relative_rect.height)
     )
-    window.blit(colour_rect, target_rect)
+    window.blit(colour_rect, relative_rect)
     return colour_rect
