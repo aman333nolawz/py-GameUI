@@ -10,6 +10,8 @@ vec = pygame.math.Vector2
 
 pygame.init()
 
+settings = {"FONT": None}
+
 
 class Button:
     def __init__(
@@ -27,7 +29,7 @@ class Button:
         border: int = 2,
         border_color: Union[tuple, pygame.Color] = (0, 0, 0),
         border_radius: Union[int, tuple, list] = (0, 0, 0, 0),
-        font: pygame.font.Font = pygame.font.SysFont("arial", 25),
+        font: pygame.font.Font = pygame.font.SysFont(settings["FONT"], 25),
         ipadx: int = 0,
         ipady: int = 0,
         function=None,
@@ -173,7 +175,9 @@ class Button:
         """
         pos = pygame.mouse.get_pos()
         if (pos[0] > self.pos[0]) and (pos[0] < self.pos[0] + self.width):
-            if (pos[1] > self.pos[1]) and (pos[1] < self.pos[1] + self.height): # Check if the mouse is hovered
+            if (pos[1] > self.pos[1]) and (
+                pos[1] < self.pos[1] + self.height
+            ):  # Check if the mouse is hovered
                 if self.enabled:
                     self.hovered = True
 
@@ -186,7 +190,7 @@ class Button:
             if (pos[0] > self.pos[0]) and (pos[0] < self.pos[0] + self.width):
                 if (pos[1] > self.pos[1]) and (
                     pos[1] < self.pos[1] + self.height
-                ): # Checks if the button is pressed
+                ):  # Checks if the button is pressed
                     if self.enabled:
                         self.clicked = True
 
